@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #0A0A0F;
+    --bg-surface: #12121A;
+    --bg-elevated: #1A1A28;
+    --border: #1E1E2E;
+    --primary: #7C3AED;
+    --secondary: #06B6D4;
+    --accent: #F59E0B;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #1E1E2E #0A0A0F;
+  }
+
+  body {
+    background: #0A0A0F;
+    color: #E2E8F0;
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(124, 58, 237, 0.4);
+    color: #E2E8F0;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(18, 18, 26, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(30, 30, 46, 0.8);
+    border-radius: 16px;
+    transition: all 0.2s ease;
+  }
+
+  .glass-card:hover {
+    border-color: rgba(124, 58, 237, 0.3);
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.08);
+  }
+
+  .glow-badge {
+    box-shadow: 0 0 12px currentColor;
+  }
+
+  .artifact-verified {
+    position: relative;
+  }
+
+  .artifact-verified::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.2));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .artifact-verified:hover::after {
+    opacity: 1;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 50%, #F59E0B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #7C3AED, #6D28D9);
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(124, 58, 237, 0.3);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 24px rgba(124, 58, 237, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: #E2E8F0;
+    padding: 0.625rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 500;
+    border: 1px solid #1E1E2E;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: #7C3AED;
+    background: rgba(124, 58, 237, 0.05);
+  }
+}
