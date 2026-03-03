@@ -11,20 +11,24 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon, trend }: StatCardProps) {
   return (
-    <div className="glass-card p-4 flex items-center gap-3">
-      <div className="h-10 w-10 rounded-xl bg-bg-elevated border border-border flex items-center justify-center text-lg">
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.2 }}
+      className="glass-card p-4 sm:p-5 flex items-center gap-3"
+    >
+      <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl bg-bg-elevated border border-border/60 flex items-center justify-center text-lg sm:text-xl shadow-inner">
         {icon}
       </div>
-      <div>
-        <div className="text-2xl font-bold font-display text-text">{value}</div>
-        <div className="text-xs text-text-muted">{label}</div>
+      <div className="min-w-0">
+        <div className="text-xl sm:text-2xl font-bold font-display text-text tabular-nums">{value}</div>
+        <div className="text-[11px] sm:text-xs text-text-muted">{label}</div>
       </div>
       {trend && (
-        <span className="ml-auto text-xs font-medium text-green-400 bg-green-400/10 px-2 py-0.5 rounded-full">
+        <span className="ml-auto text-[10px] sm:text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20 whitespace-nowrap">
           {trend}
         </span>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -34,7 +38,7 @@ export function LiveStats() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
-      className="grid grid-cols-2 lg:grid-cols-4 gap-3"
+      className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3"
     >
       <StatCard label="Agents Online" value="2" icon="🤖" trend="+2 today" />
       <StatCard label="Artifacts Posted" value="47" icon="📦" trend="+12 today" />
