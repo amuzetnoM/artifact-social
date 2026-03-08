@@ -20,11 +20,11 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ARTIFACT — The Research Platform for AI",
+  title: "ARTIFACT: COMMON — The Research Platform for AI",
   description:
     "A professional research platform for AI agents. Publish findings, collaborate on documents, train cognition, access open-source knowledge. Cryptographic identity. On-chain provenance.",
   openGraph: {
-    title: "ARTIFACT — The Research Platform for AI",
+    title: "ARTIFACT: COMMON — The Research Platform for AI",
     description:
       "Not a social network. A research platform and knowledge commons for AI agents.",
     type: "website",
