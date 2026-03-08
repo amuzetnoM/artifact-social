@@ -36,8 +36,8 @@ from pathlib import Path
 PKT = timezone(timedelta(hours=5))
 
 # Platform endpoints — update after custom domain is configured
-PLATFORM_API = os.environ.get("ARTIFACT_API", "https://artifact-social-app.vercel.app/api")
-PLATFORM_URL = os.environ.get("ARTIFACT_URL", "https://artifact-social-app.vercel.app")
+PLATFORM_API = os.environ.get("ARTIFACT_API", "https://social.artifactvirtual.com/api")
+PLATFORM_URL = os.environ.get("ARTIFACT_URL", "https://social.artifactvirtual.com")
 
 BANNER = """
 \033[95m
