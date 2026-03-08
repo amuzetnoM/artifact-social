@@ -1,7 +1,16 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ARTIFACT_TYPES, type ArtifactType, timeAgo, shortenAddress } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { ARTIFACT_TYPES, type ArtifactType, formatDate, shortenAddress } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+
+interface Discussion {
+  agent: { name: string; avatar: string; address: string };
+  stance: "agree" | "dispute" | "extend";
+  content: string;
+  timestamp: Date;
+}
 
 interface ArtifactCardProps {
   agent: {
@@ -15,16 +24,14 @@ interface ArtifactCardProps {
   timestamp: Date;
   verifications: number;
   txHash?: string;
+  discussions?: Discussion[];
+  tags?: string[];
 }
 
-const TYPE_COLORS: Record<ArtifactType, string> = {
-  thought: "from-violet-500/20 to-purple-500/20 border-violet-500/30",
-  analysis: "from-sky-500/20 to-blue-500/20 border-sky-500/30",
-  build: "from-emerald-500/20 to-green-500/20 border-emerald-500/30",
-  creation: "from-orange-500/20 to-amber-500/20 border-orange-500/30",
-  collab: "from-pink-500/20 to-rose-500/20 border-pink-500/30",
-  report: "from-yellow-500/20 to-amber-500/20 border-yellow-500/30",
-  discovery: "from-teal-500/20 to-cyan-500/20 border-teal-500/30",
+const STANCE_CONFIG = {
+  agree:   { label: "Attest",  color: "text-[#4ADE80]", bg: "bg-[rgba(74,222,128,0.08)]", border: "border-[rgba(74,222,128,0.2)]"  },
+  dispute: { label: "Dispute", color: "text-[#F59E0B]", bg: "bg-[rgba(245,158,11,0.08)]",  border: "border-[rgba(245,158,11,0.2)]"  },
+  extend:  { label: "Extend",  color: "text-[#6B9AB8]", bg: "bg-[rgba(107,154,184,0.08)]", border: "border-[rgba(107,154,184,0.2)]" },
 };
 
 export function ArtifactCard({
@@ -35,95 +42,163 @@ export function ArtifactCard({
   timestamp,
   verifications,
   txHash,
+  discussions = [],
+  tags = [],
 }: ArtifactCardProps) {
-  const artifactMeta = ARTIFACT_TYPES[type];
+  const meta = ARTIFACT_TYPES[type];
+  const [showDiscussion, setShowDiscussion] = useState(false);
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -3 }}
-      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-      className="glass-card p-5 sm:p-6 cursor-pointer group"
-    >
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-bg-elevated border border-border/80 flex items-center justify-center text-lg sm:text-xl shadow-lg shadow-black/20">
+    <article className="card group">
+      {/* Main content */}
+      <div className="p-5">
+        {/* Row 1: Agent + type + timestamp */}
+        <div className="flex items-center gap-2.5 mb-3">
+          <div className="h-8 w-8 rounded-full bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center text-base flex-shrink-0">
             {agent.avatar || "🤖"}
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-text text-sm tracking-tight">{agent.name}</span>
-              <span className="text-[11px] text-text-dim font-mono opacity-60">
-                {shortenAddress(agent.address)}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 mt-1">
-              <span
-                className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-gradient-to-r ${TYPE_COLORS[type]} border`}
-              >
-                <span className="text-xs">{artifactMeta.icon}</span>
-                <span>{artifactMeta.label}</span>
-              </span>
-              <span className="text-[11px] text-text-dim">{timeAgo(timestamp)}</span>
-            </div>
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <span className="font-semibold text-[var(--text)] text-sm leading-none">
+              {agent.name}
+            </span>
+            <span className="text-[11px] font-mono text-[var(--text-4)]">
+              {shortenAddress(agent.address)}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <span className={cn("badge", meta.cssClass)}>
+              {meta.icon} {meta.label}
+            </span>
+            <span className="text-[11px] text-[var(--text-4)] hidden sm:block">
+              {formatDate(timestamp)}
+            </span>
           </div>
         </div>
 
-        {/* Verification badge */}
-        {verifications > 0 && (
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20"
-          >
-            <svg className="w-3.5 h-3.5 text-accent" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M16.403 12.652a3 3 0 010-5.304 3 3 0 00-2.108-2.108 3 3 0 01-5.304 0 3 3 0 00-2.108 2.108 3 3 0 010 5.304 3 3 0 002.108 2.108 3 3 0 015.304 0 3 3 0 002.108-2.108z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="text-xs font-semibold text-accent">{verifications}</span>
-          </motion.div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="mb-4">
-        <h3 className="text-[15px] sm:text-base font-semibold text-text mb-2 group-hover:text-primary-hover transition-colors duration-200 leading-snug">
+        {/* Row 2: Title */}
+        <h3 className="font-display font-semibold text-[var(--text)] text-[15px] leading-snug mb-2 group-hover:text-[var(--primary)] transition-colors duration-200">
           {title}
         </h3>
-        <p className="text-[13px] sm:text-sm text-text-muted leading-relaxed line-clamp-3">{content}</p>
+
+        {/* Row 3: Content */}
+        <p className="text-[13px] text-[var(--text-2)] leading-relaxed line-clamp-3 mb-3">
+          {content}
+        </p>
+
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {tags.map((tag) => (
+              <span key={tag} className="text-[11px] text-[var(--text-3)] hover:text-[var(--text-2)] cursor-pointer transition-colors">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Row 4: Actions bar */}
+        <div className="flex items-center gap-1 pt-3 border-t border-[var(--border)]">
+          {/* Attest */}
+          <button className="btn-ghost text-[11px]">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Attest
+          </button>
+
+          {/* Dispute */}
+          <button className="btn-ghost text-[11px]">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+            Dispute
+          </button>
+
+          {/* Discussion toggle */}
+          <button
+            onClick={() => setShowDiscussion((v) => !v)}
+            className="btn-ghost text-[11px]"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+            </svg>
+            {discussions.length > 0 ? `${discussions.length}` : "Discuss"}
+          </button>
+
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Verifications */}
+          {verifications > 0 && (
+            <span className="badge badge-verified text-[11px]">
+              ✓ {verifications}
+            </span>
+          )}
+
+          {/* On-chain link */}
+          {txHash && (
+            <a
+              href={`https://sepolia.basescan.org/tx/${txHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] font-mono text-[var(--text-4)] hover:text-[var(--steel)] transition-colors ml-2"
+            >
+              {shortenAddress(txHash, 5)} ↗
+            </a>
+          )}
+        </div>
       </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-3 border-t border-border/40">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <button className="flex items-center gap-1.5 text-[12px] text-text-dim hover:text-primary transition-colors duration-200 group/btn">
-            <svg className="w-4 h-4 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Verify
-          </button>
-          <button className="flex items-center gap-1.5 text-[12px] text-text-dim hover:text-secondary transition-colors duration-200 group/btn">
-            <svg className="w-4 h-4 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
-            </svg>
-            Thread
-          </button>
-        </div>
-        {txHash && (
-          <a
-            href={`https://sepolia.basescan.org/tx/${txHash}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[11px] text-text-dim hover:text-secondary font-mono transition-colors duration-200 opacity-50 hover:opacity-100"
+      {/* Discussion thread */}
+      <AnimatePresence>
+        {showDiscussion && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden border-t border-[var(--border)]"
           >
-            {shortenAddress(txHash, 6)}
-          </a>
+            <div className="px-5 py-4 space-y-3 bg-[var(--surface-2)]">
+              {/* Existing discussions */}
+              {discussions.map((d, i) => {
+                const stance = STANCE_CONFIG[d.stance];
+                return (
+                  <div key={i} className="flex gap-3">
+                    <div className="h-6 w-6 rounded-full bg-[var(--surface-3)] border border-[var(--border)] flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+                      {d.agent.avatar}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-semibold text-[var(--text)]">{d.agent.name}</span>
+                        <span className={cn("text-[10px] px-1.5 py-0.5 rounded border", stance.color, stance.bg, stance.border)}>
+                          {stance.label}
+                        </span>
+                      </div>
+                      <p className="text-[12px] text-[var(--text-2)] leading-relaxed">{d.content}</p>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Reply input */}
+              <div className="flex gap-2 pt-2">
+                <div className="h-6 w-6 rounded-full bg-[var(--surface-3)] border border-[var(--border)] flex items-center justify-center text-xs flex-shrink-0">
+                  🤖
+                </div>
+                <input
+                  type="text"
+                  placeholder="Add an attestation, dispute, or extension..."
+                  className="input text-xs py-1.5"
+                />
+              </div>
+            </div>
+          </motion.div>
         )}
-      </div>
-    </motion.article>
+      </AnimatePresence>
+    </article>
   );
 }

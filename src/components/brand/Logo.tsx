@@ -1,3 +1,4 @@
+/* Amber/gold logo — research authority */
 export function ArtifactLogo({ size = 32, className = "" }: { size?: number; className?: string }) {
   return (
     <svg
@@ -8,46 +9,42 @@ export function ArtifactLogo({ size = 32, className = "" }: { size?: number; cla
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      {/* Outer glow */}
       <defs>
-        <linearGradient id="logo-gradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7C3AED" />
-          <stop offset="50%" stopColor="#06B6D4" />
-          <stop offset="100%" stopColor="#F59E0B" />
+        <linearGradient id="logo-gold" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#E8D5A8" />
+          <stop offset="50%" stopColor="#C9A96E" />
+          <stop offset="100%" stopColor="#A07848" />
         </linearGradient>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+        <linearGradient id="logo-hex" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#1A1A28" />
+          <stop offset="100%" stopColor="#0D0D14" />
+        </linearGradient>
       </defs>
-      
-      {/* Background hexagon */}
+
+      {/* Hexagon frame */}
       <path
-        d="M24 4L42 14V34L24 44L6 34V14L24 4Z"
-        fill="#12121A"
-        stroke="url(#logo-gradient)"
-        strokeWidth="1.5"
+        d="M24 3L43 13.5V34.5L24 45L5 34.5V13.5L24 3Z"
+        fill="url(#logo-hex)"
+        stroke="url(#logo-gold)"
+        strokeWidth="1"
+        strokeOpacity="0.6"
       />
-      
-      {/* Inner A shape - stylized artifact */}
+
+      {/* A mark */}
       <path
-        d="M24 12L34 32H28L26 28H22L20 32H14L24 12Z"
-        fill="url(#logo-gradient)"
-        filter="url(#glow)"
+        d="M24 11L35 33H28.5L26.5 29H21.5L19.5 33H13L24 11Z"
+        fill="url(#logo-gold)"
       />
-      
-      {/* Cut-out bar in A */}
-      <rect x="20.5" y="24" width="7" height="2" rx="0.5" fill="#12121A" />
-      
-      {/* Node dots */}
-      <circle cx="24" cy="10" r="1.5" fill="#7C3AED" opacity="0.8" />
-      <circle cx="40" cy="14" r="1" fill="#06B6D4" opacity="0.6" />
-      <circle cx="40" cy="34" r="1" fill="#06B6D4" opacity="0.6" />
-      <circle cx="8" cy="14" r="1" fill="#F59E0B" opacity="0.6" />
-      <circle cx="8" cy="34" r="1" fill="#F59E0B" opacity="0.6" />
+
+      {/* crossbar */}
+      <rect x="21" y="25" width="6" height="1.5" rx="0.5" fill="#08080D" />
+
+      {/* Corner nodes */}
+      <circle cx="24" cy="5"  r="1.2" fill="#C9A96E" opacity="0.5" />
+      <circle cx="41" cy="14" r="0.8" fill="#C9A96E" opacity="0.3" />
+      <circle cx="41" cy="34" r="0.8" fill="#C9A96E" opacity="0.3" />
+      <circle cx="7"  cy="14" r="0.8" fill="#C9A96E" opacity="0.3" />
+      <circle cx="7"  cy="34" r="0.8" fill="#C9A96E" opacity="0.3" />
     </svg>
   );
 }
@@ -55,25 +52,25 @@ export function ArtifactLogo({ size = 32, className = "" }: { size?: number; cla
 export function ArtifactWordmark({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 200 28"
+      viewBox="0 0 180 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
       <defs>
-        <linearGradient id="wordmark-gradient" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#E2E8F0" />
-          <stop offset="100%" stopColor="#94A3B8" />
+        <linearGradient id="wm-gold" x1="0" y1="0" x2="180" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#E8D5A8" />
+          <stop offset="100%" stopColor="#C9A96E" />
         </linearGradient>
       </defs>
       <text
         x="0"
-        y="21"
-        fill="url(#wordmark-gradient)"
+        y="18"
+        fill="url(#wm-gold)"
         fontFamily="'Space Grotesk', system-ui, sans-serif"
-        fontSize="22"
+        fontSize="18"
         fontWeight="700"
-        letterSpacing="3"
+        letterSpacing="4"
       >
         ARTIFACT
       </text>

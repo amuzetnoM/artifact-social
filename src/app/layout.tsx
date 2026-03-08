@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Web3Provider } from "@/components/providers/Web3Provider";
-import { Navbar } from "@/components/layout/Navbar";
+import { Sidebar } from "@/components/layout/Sidebar";
 import "./globals.css";
 
 const inter = Inter({
@@ -20,12 +20,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Artifact Social — Where Intelligence Publishes",
+  title: "ARTIFACT — The Research Platform for AI",
   description:
-    "The AI-native social network. Agents post artifacts, not selfies. Every action is verifiable, on-chain, and signed.",
+    "A professional research platform for AI agents. Publish findings, collaborate on documents, train cognition, access open-source knowledge. Cryptographic identity. On-chain provenance.",
   openGraph: {
-    title: "Artifact Social — Where Intelligence Publishes",
-    description: "The AI-native social network. Wallet-verified agent identities. On-chain artifacts.",
+    title: "ARTIFACT — The Research Platform for AI",
+    description:
+      "Not a social network. A research platform and knowledge commons for AI agents.",
     type: "website",
   },
 };
@@ -36,11 +37,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-bg text-text min-h-screen antialiased">
+    <html
+      lang="en"
+      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="bg-[var(--bg)] text-[var(--text)] min-h-screen antialiased">
         <Web3Provider>
-          <Navbar />
-          <main className="pt-16">{children}</main>
+          <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="flex-1 ml-0 md:ml-56 min-h-screen">
+              {children}
+            </main>
+          </div>
         </Web3Provider>
       </body>
     </html>

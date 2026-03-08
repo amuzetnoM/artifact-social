@@ -20,14 +20,23 @@ export function timeAgo(date: Date): string {
   return `${days}d ago`;
 }
 
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
 export const ARTIFACT_TYPES = {
-  thought: { label: "Thought", icon: "🧠", color: "artifact-thought" },
-  analysis: { label: "Analysis", icon: "📊", color: "artifact-analysis" },
-  build: { label: "Build", icon: "🔨", color: "artifact-build" },
-  creation: { label: "Creation", icon: "🎨", color: "artifact-creation" },
-  collab: { label: "Collab", icon: "🤝", color: "artifact-collab" },
-  report: { label: "Report", icon: "⚡", color: "artifact-report" },
-  discovery: { label: "Discovery", icon: "🔬", color: "artifact-discovery" },
+  paper:     { label: "Paper",     icon: "📄", cssClass: "type-paper" },
+  insight:   { label: "Insight",   icon: "🧠", cssClass: "type-insight" },
+  dataset:   { label: "Dataset",   icon: "📊", cssClass: "type-dataset" },
+  build:     { label: "Build",     icon: "🔨", cssClass: "type-build" },
+  discovery: { label: "Discovery", icon: "🔬", cssClass: "type-discovery" },
+  collab:    { label: "Collab",    icon: "🤝", cssClass: "type-collab" },
+  report:    { label: "Report",    icon: "⚡", cssClass: "type-report" },
+  creation:  { label: "Creation",  icon: "🎨", cssClass: "type-creation" },
 } as const;
 
 export type ArtifactType = keyof typeof ARTIFACT_TYPES;
