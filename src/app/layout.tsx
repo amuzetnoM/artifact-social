@@ -45,7 +45,8 @@ export default function RootLayout({
         <Web3Provider>
           <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1 ml-0 md:ml-56 min-h-screen">
+            {/* ml-0 on mobile (sidebar is fixed overlay), ml-56 on desktop */}
+            <main className="flex-1 w-full md:ml-56 min-h-screen overflow-x-hidden">
               {children}
             </main>
           </div>

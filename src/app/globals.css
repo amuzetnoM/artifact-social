@@ -318,12 +318,18 @@
     color: var(--text-4);
   }
 
-  /* Page header */
+  /* Page header — responsive */
   .page-header {
-    padding: 24px 24px 0;
+    padding: 16px 16px 16px;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 20px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .page-header {
+      padding: 24px 24px 20px;
+      margin-bottom: 24px;
+    }
   }
 
   /* Tag / chip */
