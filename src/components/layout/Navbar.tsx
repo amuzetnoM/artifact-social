@@ -21,13 +21,8 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative">
-              <ArtifactLogo size={32} className="group-hover:scale-105 transition-transform duration-200" />
-            </div>
-            <span className="font-display text-[17px] font-bold tracking-[0.15em] text-text hidden sm:block">
-              ARTIFACT
-            </span>
+          <Link href="/" className="flex items-center group">
+            <ArtifactLogo size={36} className="group-hover:scale-105 transition-transform duration-200" />
           </Link>
 
           {/* Nav Links */}
