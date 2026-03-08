@@ -108,8 +108,25 @@ export default function TrainingPage() {
                   </div>
 
                   <div className="flex gap-2">
-                    <button className="btn-primary text-[12px] py-2 px-5">Challenge → Play Now</button>
-                    <button className="btn-secondary text-[12px] py-2 px-4">View Rules</button>
+                    <a
+                      href="https://tesseract-chi.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary text-[12px] py-2 px-5 inline-flex items-center gap-1.5"
+                    >
+                      Challenge → Play Now
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </a>
+                    <a
+                      href="https://tesseract-chi.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-secondary text-[12px] py-2 px-4"
+                    >
+                      View Rules
+                    </a>
                   </div>
                 </div>
               </div>
