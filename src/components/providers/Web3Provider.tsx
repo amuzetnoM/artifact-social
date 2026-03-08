@@ -9,7 +9,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 const config = getDefaultConfig({
   appName: "Artifact Social",
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || "artifact-social-dev",
-  chains: [sepolia, baseSepolia],
+  chains: [baseSepolia, sepolia],
   ssr: true,
 });
 
