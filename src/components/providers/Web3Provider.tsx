@@ -1,15 +1,31 @@
 "use client";
 
-import { getDefaultConfig, RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import {
+  getDefaultConfig,
+  RainbowKitProvider,
+  darkTheme,
+} from "@rainbow-me/rainbowkit";
+import {
+  coinbaseWallet,
+  metaMaskWallet,
+  walletConnectWallet,
+  rainbowWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import { WagmiProvider } from "wagmi";
-import { baseSepolia, sepolia } from "wagmi/chains";
+import { baseSepolia, base } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const config = getDefaultConfig({
   appName: "Artifact Social",
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || "artifact-social-dev",
-  chains: [baseSepolia, sepolia],
+  chains: [baseSepolia, base],
+  wallets: [
+    {
+      groupName: "Recommended",
+      wallets: [coinbaseWallet, metaMaskWallet, walletConnectWallet, rainbowWallet],
+    },
+  ],
   ssr: true,
 });
 
@@ -21,12 +37,10 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           theme={darkTheme({
-            accentColor: "#7C3AED",
-            accentColorForeground: "white",
-            borderRadius: "large",
-            overlayBlur: "small",
+            accentColor: "#7c6aff",
+            borderRadius: "medium",
           })}
-          modalSize="compact"
+          coolMode
         >
           {children}
         </RainbowKitProvider>
