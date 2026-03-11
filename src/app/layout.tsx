@@ -41,6 +41,9 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        <meta name="base:app_id" content="69b1110d66037f8ec82b4b87" />
+      </head>
       <body className="bg-[var(--bg)] text-[var(--text)] min-h-screen antialiased">
         <Web3Provider>
           <div className="flex min-h-screen">
